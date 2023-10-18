@@ -61,7 +61,10 @@
               elem)))
 
 (defn aspect-scale-to-width [w elem]
-  (aspect-fill [w (second (ui/bounds elem))] elem))
+  (let [s (/ w
+             (ui/width elem))]
+    (ui/scale s s
+              elem)))
 
 ;; Crop vertically, keeping the the middle of the image
 (defn crop-to-height [target-height pad? elem]
@@ -145,7 +148,8 @@
        (aspect-scale-to-width 1200)
        (crop-to-height 675 true)
        (add-texts! article-meta)
-       (save-as! "jpg" (meta-fs/replace-ext original-path "-twitter.jpg")))
+       (skia/save-image (meta-fs/replace-ext original-path "-twitter.jpg"))
+       #_(save-as! "jpg" ))
 
   ;; Use Membrane UI to work more interactively with the composition
   ;; When you have evaluated this, you can try editing something above
